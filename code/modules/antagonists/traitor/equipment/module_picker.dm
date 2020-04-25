@@ -68,14 +68,17 @@
 		return
 	if(!isAI(usr))
 		return
-
 	switch(action)
 		if("buy")
-			var/list/buyable_modules = list()
+			var/datum/AI_Module/module
 			for(var/category in possible_modules)
-				buyable_modules += possible_modules[category]
-			var/module = locate(params["ref"]) in buyable_modules
-			if(!module || !(module in buyable_modules))
+				if(module)
+					break
+				for(var/datum/AI_Module/i in possible_modules[category])
+					if(params["item"] == i.name)
+						module = i
+						break
+			if(!module)
 				return
 			var/datum/AI_Module/AM = module
 			purchase_module(usr, AM)
